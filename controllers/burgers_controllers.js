@@ -19,8 +19,9 @@ module.exports = function(app){
   app.get("/", function(req, res){
     db.burgers.findAll({}).then(function(data) {
       var hbsObject ={
-        burger :data
+        burgers :data
       };
+      console.log(hbsObject);
       res.render("index",hbsObject);
     });
   });
