@@ -6,6 +6,8 @@
 // var router = express.Router();
 
 var db = require("../models");
+var path = require("path");
+
 
 
 // Import the model (cat.js) to use its database functions.
@@ -16,32 +18,72 @@ var db = require("../models");
 module.exports = function(app){
   app.get("/", function(req, res){
     db.burgers.findAll({}).then(function(data) {
-      // We have access to the todos as an argument inside of the callback function
-      res.json(data);
+      var hbsObject ={
+        burger :data
+      };
+      res.render("index",hbsObject);
     });
   });
 
-  app.post("/api/burgers", function(req, res){
-    db.burgers.create(req.body).then(function(data){
-      res.json({data});
-    })
-    .catch(function(err){
-      res.send(err);
+  app.get("/api/all", function(req, res){
+    db.burgers.findAll({}).then(function(data) {
+      var hbsObject ={
+        burger :data
+      };
+      res.render("index",hbsObject);
     });
   });
 
-  app.put("/api/burgers/:id", function(req, res){
+  app.post("/api/burgers", function(req, res) {
+    db.burgers.create({
+        burger_name: req.body.name
+    }).then(function() {
+        res.redirect("/");
+    }) .catch(function(err){
+       res.send(err);
+     });;
+  });
 
-    db.burgers.update(req.body, {
-      where: {
-        id: req.params.id
-      }
-    })
-      .then(function(data) {
-        res.json(data);
-      });
+  // app.post("/api/burgers", function(req, res){
+  //   db.burgers.create({
+  //     burger_name :req.body.burger_name,
+  //     devoured :true
+  //   }).then(function(data){
+  //     //  res.json(data);
+  //     //res.redirect("/");
+  //     res.json({ id: data.id });
+
+
+  //   })
+    // .catch(function(err){
+    //   res.send(err);
+    // });
+  // });
+  app.put("/api/burgers/:id", function(req, res) {
+    db.burgers.update({
+        devoured: true
+    },
+    {
+        where: {
+            id: req.params.id
+        }
+    }).then(function() {
+        res.redirect("/");
+    });
+  })
+  // app.put("/api/burgers/:id", function(req, res){
+
+  //   db.burgers.update(req.body, {
+      
+  //     where: {
+  //       id: req.params.id
+  //     }
+  //   })
+  //     .then(function(data) {
+  //       res.json(data);
+  //     });
   
-  });
+  // });
 
   app.delete("/api/burgers/:id", function(req, res){
 

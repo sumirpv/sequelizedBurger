@@ -8,7 +8,7 @@ var app = express();
 var PORT = process.env.PORT || 8080;
 
 // Static directory
-app.use(express.static("public"));
+app.use(express.static("./public"));
 
 //parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +25,8 @@ app.set("view engine", "handlebars");
 
 // Import routes and give the server access to them.
  require("./controllers/burgers_controllers.js")(app);
+ require("./controllers/html-routes.js")(app);
+
 
 
 
