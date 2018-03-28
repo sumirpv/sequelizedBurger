@@ -1,21 +1,33 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var db = require("./models");
+// Set Handlebars.
+var exphbs = require("express-handlebars");
 
 var app = express();
 var PORT = process.env.PORT || 8080;
 
-var db = require("./models");
+// Static directory
+app.use(express.static("public"));
 
-
-// parse application/x-www-form-urlencoded
+//parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 // parse application/json
 app.use(bodyParser.json());
 
-// Static directory
-app.use(express.static("public"));
 
-require("./routes/api-routes.js")(app);
+
+
+
+
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+// Import routes and give the server access to them.
+ require("./controllers/burgers_controllers.js")(app);
+
+
+
 
 db.sequelize.sync().then(function() {
     app.listen(PORT, function() {

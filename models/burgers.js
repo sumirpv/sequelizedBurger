@@ -6,12 +6,11 @@ module.exports = function(sequelize, DataTypes) {
       },
       devoured : {
         type: DataTypes.BOOLEAN,
-        defaultValue: "Personal"
-      },
-      category: {
-        type: DataTypes.STRING,
-        defaultValue: "Personal"
+        defaultValue: true
       }
+    },
+    {
+    timestamps : false
     });
     return Burgers;
   };
