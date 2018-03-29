@@ -21,7 +21,7 @@ module.exports = function(app){
       var hbsObject ={
         burgers :data
       };
-      console.log(hbsObject);
+      console.log("This is"+ JSON.stringify(hbsObject));
       res.render("index",hbsObject);
     });
   });
@@ -29,7 +29,7 @@ module.exports = function(app){
   app.get("/api/all", function(req, res){
     db.burgers.findAll({}).then(function(data) {
       var hbsObject ={
-        burger :data
+        burgers :data
       };
       res.render("index",hbsObject);
     });
@@ -37,7 +37,7 @@ module.exports = function(app){
 
   app.post("/api/burgers", function(req, res) {
     db.burgers.create({
-        burger_name: req.body.name
+        burger_name: req.body.burger_name
     }).then(function() {
         res.redirect("/");
     }) .catch(function(err){
